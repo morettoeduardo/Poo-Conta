@@ -1,0 +1,119 @@
+//Eduardo Augusto Formigheri Moretto
+#include <stdio.h>
+#include <iostream>
+
+using namespace std;
+
+class Conta {
+  private: float saldo, divida;
+  
+ public: Conta(float saldo, float divida) {
+      this-> saldo = saldo;
+      this-> divida = divida;
+  }
+  
+  float getSaldo() {
+      return this->saldo;
+  }
+  
+  float getDivida() {
+      return this->divida;
+  }
+  
+  
+  bool saque(Conta &x) {
+      float valorSaque;
+      cout<<"\nDigite o valor para sacar"<<endl;
+      cin>>valorSaque;
+      
+      if(valorSaque > x.getSaldo()) {
+          cout<<"Saldo insuficiente"<<endl;
+          return false;
+      } else {
+          x.saldo = x.saldo - valorSaque;
+          cout<<"Saque efetuado"<<endl;
+          return true;
+      }
+  }
+  
+  bool deposito(Conta &x) {
+      float valorDeposito;
+      cout<<"\nDigite o valor a ser depositado:"<<endl;
+      cin>>valorDeposito;
+      x.saldo += valorDeposito;
+      return true;
+  }
+  
+  bool transferencia(Conta &x, Conta &y) {
+      float valorTransferencia;
+      cout<<"\nDigite o valor a ser transferido:"<<endl;
+      cin>>valorTransferencia;
+      if(x.getSaldo() >= valorTransferencia) {
+          x.saldo -= valorTransferencia;
+          y.saldo += valorTransferencia;
+          cout<<"\nTransferencia efetuada"<<endl;
+          return true;
+      } else {
+          cout<<"\nTransferencia incompleta!"<<endl;
+          return false;
+      }
+  }
+  
+  bool emprestimo(Conta &x) {
+      float valorEmprestimo;
+      cout<<"\nDigite o valor do emprestimo: {0 - 1000}"<<endl;
+      cin>>valorEmprestimo;
+      if (valorEmprestimo <= 1000 && valorEmprestimo >= 0) {
+          x.saldo += valorEmprestimo;
+          x.divida += valorEmprestimo;
+          cout<<"\nEmprestimo realizado!"<<endl;
+        return true;
+      } else {
+          cout<<"Emprestimo Negado!"<<endl;
+          return false;
+      }
+      
+  }
+  
+  bool pagarDebito(Conta &x) {
+      float valorDivida;
+      cout<<"\nVocê possui ";
+      cout<<x.getDivida()<<" reais em divida"<<endl;
+      cout<<"Digite o quanto você quer pagar"<<endl;
+      cin>>valorDivida;
+      if(valorDivida >= x.getSaldo()) {
+          cout<<"\nOperação negada!"<<endl;
+          return false;
+      } else {
+          x.saldo -= valorDivida;
+          x.divida -= valorDivida;
+          cout<<"\nDébito Pago com sucesso!"<<endl;
+          return true;
+      }
+  }
+  
+};
+
+int main()
+{
+    
+    Conta x = Conta(1000, 200);
+    Conta y = Conta(1000, 200);
+    cout<<x.getSaldo();
+    x.saque(x);
+    cout<<x.getSaldo();
+    x.deposito(x);
+    cout<<x.getSaldo();
+    x.transferencia(x,y);
+    cout<<"Conta x:"<<x.getSaldo()<<endl;
+    cout<<"Conta y:"<<y.getSaldo()<<endl;
+    x.pagarDebito(x);
+    cout<<"Saldo:"<<x.getSaldo()<<endl;
+    cout<<"Divida:"<<x.getDivida()<<endl;
+    x.emprestimo(x);
+    cout<<"Saldo:"<<x.getSaldo()<<endl;
+    cout<<"Divida:"<<x.getDivida()<<endl;
+    
+
+    return 0;
+}
